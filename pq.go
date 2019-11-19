@@ -41,7 +41,7 @@ func (pq *PriorityQueue) Pop() interface{} {
 	return i
 }
 
-func (pq *PriorityQueue) update(i *Item, description string, priority int) {
+func (pq *PriorityQueue) Update(i *Item, description string, priority int) {
 	i.Description = description
 	i.Priority = priority
 	heap.Fix(pq, i.Index)

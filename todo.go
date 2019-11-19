@@ -21,9 +21,15 @@ func main() {
       json.Unmarshal([]byte(currItem), &tmpItem)
       heap.Push(&pq, &tmpItem)
     }
-    for pq.Len() > 0 {
+    n := pq.Len()
+    for i:=0; i<n; i++ {
       tmpItem := heap.Pop(&pq).(*Item)
-      fmt.Printf("[%2d]  %s\n", tmpItem.Priority, tmpItem.Description)
+      pq.Update(tmpItem, tmpItem.Description, i)
+      if pq.Len() > 10 {
+        fmt.Printf("[%2d]  %s\n", tmpItem.Priority, tmpItem.Description)
+      } else {
+        fmt.Printf("[%1d]  %s\n", tmpItem.Priority, tmpItem.Description)
+      }
     }
     fmt.Printf("You have %d items to do\n",len((*lines)))
   } else {
