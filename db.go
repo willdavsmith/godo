@@ -20,17 +20,19 @@ func GetDBFilePath() string {
   return filepath.FromSlash(fmt.Sprintf("%s/%s", home, ".tododb.json"))
 }
 
-func WriteDB(data string) error {
+func WriteDB(data []string) error {
   fp := GetDBFilePath()
-  f,err := os.OpenFile(fp, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0664)
+  f,err := os.OpenFile(fp, os.O_WRONLY|os.O_CREATE, 0664)
   Check(err)
   defer f.Close()
-  _, err = io.WriteString(f, data+"\n")
-  Check(err)
+  for i := 0; i < len(data); i++ {
+    _, err = io.WriteString(f, data[i]+"\n")
+    Check(err)
+  }
   return f.Sync()
 }
 
-func ReadDB() *[]string {
+func ReadDB() []string {
   f,err := os.Open(GetDBFilePath())
   Check(err)
   defer f.Close()
@@ -39,5 +41,5 @@ func ReadDB() *[]string {
   for scanner.Scan() {
     out = append(out, scanner.Text())
   }
-  return &out
+  return out
 }
