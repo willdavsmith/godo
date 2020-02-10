@@ -22,7 +22,7 @@ func GetDBFilePath() string {
 
 func WriteDB(data []string) error {
   fp := GetDBFilePath()
-  f,err := os.OpenFile(fp, os.O_WRONLY|os.O_CREATE, 0664)
+  f, err := os.OpenFile(fp, os.O_WRONLY|os.O_CREATE, 0664)
   Check(err)
   defer f.Close()
   for i := 0; i < len(data); i++ {
@@ -33,7 +33,7 @@ func WriteDB(data []string) error {
 }
 
 func ReadDB() []string {
-  f,err := os.Open(GetDBFilePath())
+  f, err := os.Open(GetDBFilePath())
   Check(err)
   defer f.Close()
   out := make([]string, 0, 5)
@@ -42,4 +42,13 @@ func ReadDB() []string {
     out = append(out, scanner.Text())
   }
   return out
+}
+
+func ClearDB() {
+  fp := GetDBFilePath()
+  err := os.Remove(fp)
+  Check(err)
+  f, e := os.Create(fp)
+  Check(e)
+  defer f.Close()
 }
